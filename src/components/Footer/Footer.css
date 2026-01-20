@@ -1,0 +1,22 @@
+@font-face {
+  src: url("../../assets/fonts/CabinetGrotesk-Medium.woff") format("woff");
+  font-family: "Cabinet Grotesk";
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  margin-top: 171px;
+}
+
+.footer__signature {
+  margin: 0;
+}
+
+.footer__copyright {
+  margin: 0;
+}
