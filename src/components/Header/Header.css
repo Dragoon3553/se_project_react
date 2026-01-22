@@ -13,6 +13,12 @@
   line-height: 24px;
 }
 
+.header__container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .header__logo {
   margin-right: 24px;
 }
@@ -39,4 +45,28 @@
 
 .header__username {
   margin: 0;
+}
+
+.header__hamburger {
+  display: none;
+  background: url(../../assets/menu_expand.png) center no-repeat;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  width: 44px;
+  height: 44px;
+}
+
+@media screen and (max-width: 722px) {
+  .header {
+    justify-content: space-between;
+    padding: 18px 0 32px;
+  }
+  .header__container {
+    display: none;
+  }
+
+  .header__hamburger {
+    display: flex;
+  }
 }

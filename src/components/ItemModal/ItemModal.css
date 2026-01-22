@@ -1,0 +1,57 @@
+@font-face {
+  src: url("../../assets/fonts/CabinetGrotesk-Bold.woff") format("woff");
+  font-family: "Cabinet Grotesk";
+}
+
+.modal__content_type_img {
+  padding: 0 0 32px;
+  border-radius: 16px;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.modal__close_type_img {
+  top: 24px;
+  right: 24px;
+  gap: 20px;
+  background-image: url(../../assets/photo_close-btn.png);
+}
+
+.modal__img {
+  object-fit: contain;
+}
+
+.modal__caption {
+  margin: 0 0 12px 32px;
+  font-size: 20px;
+}
+
+.modal__weather {
+  margin: 0 0 0 32px;
+}
+
+@media screen and (max-width: 722px) {
+  .modal__content_type_img {
+    max-width: 343px;
+    gap: 20px;
+    padding-bottom: 40px;
+    bottom: auto;
+    border-radius: 12px;
+  }
+
+  .modal__close_type_img {
+    top: 12px;
+    right: 12.8px;
+    background-image: url(../../assets/mobile_close-btn.png);
+  }
+
+  .modal__caption {
+    margin-left: 20px;
+  }
+
+  .modal__weather {
+    margin-left: 20px;
+  }
+}

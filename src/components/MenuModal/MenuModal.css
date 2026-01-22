@@ -1,0 +1,33 @@
+.modal_type_menu {
+  background-color: transparent;
+}
+.modal__content_type_menu {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  right: 16px;
+  bottom: auto;
+  max-width: none;
+  width: auto;
+  align-items: center;
+  gap: 24px;
+  padding: 60px 0;
+  border-radius: 10px;
+}
+
+.modal__close_type_menu {
+  top: 11px;
+  right: 11.4px;
+  background-image: url(../../assets/mobile_close-btn.png);
+}
+
+.modal__container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal__add-clothes-btn {
+  border: none;
+  background-color: transparent;
+}
