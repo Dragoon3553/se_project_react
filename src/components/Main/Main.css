@@ -1,8 +1,3 @@
-@font-face {
-  src: url("../../assets/fonts/CabinetGrotesk-Bold.woff") format("woff");
-  font-family: "Cabinet Grotesk";
-}
-
 .cards {
   font-family: "Cabinet Grotesk", sans-serif;
   font-size: 20px;

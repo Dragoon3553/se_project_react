@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 import Header from "../Header/Header";
@@ -7,11 +7,20 @@ import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import MenuModal from "../MenuModal/MenuModal";
+import { getWeather, filterWeatherData } from "../../utils/weatherApi";
+import { coordinates, APIkey } from "../../utils/constants";
 
 function App() {
-  const [weatherData, setWeatherData] = useState({ type: "hot" });
+  const mobileBreakpoint = 722;
+
+  const [weatherData, setWeatherData] = useState({
+    type: "",
+    temp: { F: 999 },
+    city: "",
+  });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -30,12 +39,35 @@ function App() {
     setActiveModal("menu");
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobile(window.innerWidth <= mobileBreakpoint);
+  };
+
+  useEffect(() => {
+    getWeather(coordinates, APIkey)
+      .then((data) => {
+        const filteredData = filterWeatherData(data);
+        setWeatherData(filteredData);
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    toggleMobileMenu();
+
+    window.addEventListener("resize", toggleMobileMenu);
+    return () => window.removeEventListener("resize", toggleMobileMenu);
+  }, []);
+
   return (
     <div className="page">
       <div className="page__content">
         <Header
           handleAddClick={handleAddClick}
           handleMenuClick={handleMenuClick}
+          toggleMobileMenu={toggleMobileMenu}
+          isMobile={isMobile}
+          weatherData={weatherData}
         />
         <Main weatherData={weatherData} handleCardClick={handleCardClick} />
         <Footer />
