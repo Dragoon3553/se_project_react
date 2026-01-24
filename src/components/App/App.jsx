@@ -8,19 +8,25 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import MenuModal from "../MenuModal/MenuModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import { coordinates, APIkey } from "../../utils/constants";
+import { coordinates, apiKey } from "../../utils/constants";
+import { defaultClothingItems } from "../../utils/constants";
 
 function App() {
   const mobileBreakpoint = 722;
+
+  // UseStates
 
   const [weatherData, setWeatherData] = useState({
     type: "",
     temp: { F: 999 },
     city: "",
   });
+  const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [isMobile, setIsMobile] = useState(false);
+
+  // Functions
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -39,12 +45,18 @@ function App() {
     setActiveModal("menu");
   };
 
-  const toggleMobileMenu = () => {
+  const updateIsMobile = () => {
     setIsMobile(window.innerWidth <= mobileBreakpoint);
   };
 
+  // UseEffects
+
   useEffect(() => {
-    getWeather(coordinates, APIkey)
+    setClothingItems(defaultClothingItems);
+  }, []);
+
+  useEffect(() => {
+    getWeather(coordinates, apiKey)
       .then((data) => {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
@@ -53,10 +65,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    toggleMobileMenu();
+    updateIsMobile();
 
-    window.addEventListener("resize", toggleMobileMenu);
-    return () => window.removeEventListener("resize", toggleMobileMenu);
+    window.addEventListener("resize", updateIsMobile);
+    return () => window.removeEventListener("resize", updateIsMobile);
   }, []);
 
   return (
@@ -65,17 +77,21 @@ function App() {
         <Header
           handleAddClick={handleAddClick}
           handleMenuClick={handleMenuClick}
-          toggleMobileMenu={toggleMobileMenu}
           isMobile={isMobile}
           weatherData={weatherData}
         />
-        <Main weatherData={weatherData} handleCardClick={handleCardClick} />
+        <Main
+          clothingItems={clothingItems}
+          isMobile={isMobile}
+          weatherData={weatherData}
+          handleCardClick={handleCardClick}
+        />
         <Footer />
       </div>
       <ModalWithForm
         title="New Garment"
         buttonText="Add garment"
-        activeModal={activeModal}
+        isOpen={activeModal === "add-garment"}
         onClose={closeActiveModal}
       >
         <label htmlFor="name" className="modal__label">
@@ -99,31 +115,52 @@ function App() {
         <fieldset className="modal__radio-btns">
           <legend className="modal__legend">Select the weather type:</legend>
           <label htmlFor="hot" className="modal__label modal__label_type_radio">
-            <input id="hot" type="radio" className="modal__radio-input" /> Hot
+            <input
+              id="hot"
+              type="radio"
+              name="weather"
+              value="hot"
+              className="modal__radio-input"
+            />{" "}
+            Hot
           </label>
           <label
             htmlFor="warm"
             className="modal__label modal__label_type_radio"
           >
-            <input id="warm" type="radio" className="modal__radio-input" /> Warm
+            <input
+              id="warm"
+              type="radio"
+              name="weather"
+              value="warm"
+              className="modal__radio-input"
+            />{" "}
+            Warm
           </label>
           <label
             htmlFor="cold"
             className="modal__label modal__label_type_radio"
           >
-            <input id="cold" type="radio" className="modal__radio-input" /> Cold
+            <input
+              id="cold"
+              type="radio"
+              name="weather"
+              value="cold"
+              className="modal__radio-input"
+            />{" "}
+            Cold
           </label>
         </fieldset>
       </ModalWithForm>
       <ItemModal
-        activeModal={activeModal}
+        isOpen={activeModal === "preview"}
         onClose={closeActiveModal}
         card={selectedCard}
       />
       <MenuModal
         handleAddClick={handleAddClick}
         onClose={closeActiveModal}
-        activeMenu={activeModal}
+        isOpen={activeModal === "menu"}
       />
     </div>
   );

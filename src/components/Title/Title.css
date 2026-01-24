@@ -1,6 +1,6 @@
-.title {
+/* .title {
   display: none;
-}
+} */
 
 .title__header {
   font-family: "Cabinet Grotesk", sans-serif;
@@ -8,10 +8,4 @@
   font-size: 20px;
   line-height: 24px;
   margin: 0 0 16px;
-}
-
-@media screen and (max-width: 722px) {
-  .title {
-    display: block;
-  }
 }

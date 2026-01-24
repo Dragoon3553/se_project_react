@@ -1,11 +1,9 @@
 import "./MenuModal.css";
 import avatar from "../../assets/avatar.png";
 
-function MenuModal({ handleAddClick, onClose, activeMenu }) {
+function MenuModal({ handleAddClick, onClose, isOpen }) {
   return (
-    <div
-      className={`modal modal_type_menu ${activeMenu === "menu" ? "modal_opened" : ""}`}
-    >
+    <div className={`modal modal_type_menu ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content modal__content_type_menu">
         <button
           onClick={onClose}
