@@ -1,12 +1,15 @@
 .toggle-switch {
   width: 56px;
   height: 28px;
-  border: 2px solid rgba(33, 33, 33, 1);
+  border: 2px solid rgba(126, 126, 126, 1);
   border-radius: 20px;
   display: flex;
   margin-left: auto;
-  overflow: hidden;
   position: relative;
+}
+
+.toggle-switch:hover {
+  border-color: rgba(0, 0, 0, 1);
 }
 
 .toggle-switch__checkbox {
@@ -14,39 +17,43 @@
 }
 
 .toggle-switch__slider {
-  background-color: rgba(33, 33, 33, 1);
+  background-color: rgba(0, 0, 0, 1);
   width: 28px;
   height: 28px;
   position: absolute;
   border-radius: 50%;
   left: 0;
-  transition: all 0.3s;
+  transition: transform 0.25s ease;
+  box-shadow: 0 0 0 2px;
 }
 
 .toggle-switch__text {
+  color: rgba(0, 0, 0, 0.5);
   position: absolute;
   line-height: 14px;
   top: 7px;
 }
 
 .toggle-switch__text_F {
-  color: rgba(255, 255, 255, 1);
   left: 7px;
 }
 
 .toggle-switch__text_C {
-  color: rgba(0, 0, 0, 0.5);
   right: 7px;
 }
 
 .toggle-switch__checkbox:checked ~ .toggle-switch__slider {
-  left: 28px;
+  transform: translateX(28px);
 }
 
-.toggle-switch__checkbox:checked ~ .toggle-switch__text_F {
-  color: rgba(0, 0, 0, 0.5);
+.toggle-switch:hover .toggle-switch__slider {
+  transform: translateX(2px);
 }
 
-.toggle-switch__checkbox:checked ~ .toggle-switch__text_C {
+.toggle-switch:hover .toggle-switch__checkbox:checked ~ .toggle-switch__slider {
+  transform: translateX(26px);
+}
+
+.toggle-switch__text_color_white {
   color: rgba(255, 255, 255, 1);
 }

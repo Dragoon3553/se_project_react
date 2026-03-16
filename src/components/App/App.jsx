@@ -5,12 +5,12 @@ import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import MenuModal from "../MenuModal/MenuModal";
 
-// JS Imports
-import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
+// Js Imports
+import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
 
 // Utils Imports
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
@@ -24,7 +24,7 @@ function App() {
 
   const [weatherData, setWeatherData] = useState({
     type: "",
-    temp: { F: 999 },
+    temp: { F: 999, C: 999 },
     city: "",
     condition: "",
     isDay: true,
@@ -103,7 +103,11 @@ function App() {
           />
           <Footer />
         </div>
-        <ModalWithForm
+        <AddItemModal
+          onClose={closeActiveModal}
+          isOpen={activeModal === "add-garment"}
+        />
+        {/* <ModalWithForm
           title="New Garment"
           buttonText="Add garment"
           isOpen={activeModal === "add-garment"}
@@ -169,7 +173,7 @@ function App() {
               Cold
             </label>
           </fieldset>
-        </ModalWithForm>
+        </ModalWithForm> */}
         <ItemModal
           isOpen={activeModal === "preview"}
           onClose={closeActiveModal}
