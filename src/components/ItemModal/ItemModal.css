@@ -15,7 +15,9 @@
 }
 
 .modal__img {
-  object-fit: contain;
+  object-fit: cover;
+  max-width: 496px;
+  max-height: 496px;
 }
 
 .modal__caption {
