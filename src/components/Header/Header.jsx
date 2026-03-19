@@ -1,8 +1,9 @@
+import { NavLink } from "react-router-dom";
+
 import "./Header.css";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import logo from "../../assets/wtwr_logo.svg";
 import avatar from "../../assets/avatar.png";
-import expand from "../../assets/menu_expand.png";
 
 export const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -12,7 +13,9 @@ export const currentDate = new Date().toLocaleString("default", {
 function Header({ handleAddClick, handleMenuClick, isMobile, weatherData }) {
   return (
     <header className="header">
-      <img src={logo} alt="wtwr logo" className="header__logo" />
+      <NavLink to="/">
+        <img src={logo} alt="wtwr logo" className="header__logo" />
+      </NavLink>
       <div
         className={`header__container ${isMobile ? "header__container_opened" : ""} `}
       >
@@ -27,10 +30,16 @@ function Header({ handleAddClick, handleMenuClick, isMobile, weatherData }) {
         >
           + Add Clothes
         </button>
-        <div className="header__user-container">
-          <p className="header__username">Terrance Tegegne</p>
-          <img src={avatar} alt="Terrance Tegegne" className="header__avatar" />
-        </div>
+        <NavLink className="header__nav-link" to="/profile">
+          <div className="header__profile">
+            <p className="header__username">Terrance Tegegne</p>
+            <img
+              src={avatar}
+              alt="Terrance Tegegne"
+              className="header__avatar"
+            />
+          </div>
+        </NavLink>
       </div>
       {isMobile && (
         <button

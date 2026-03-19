@@ -1,13 +1,23 @@
+import { useEffect } from "react";
 import { useForm } from "../../hooks/useForm";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
+const defaultValues = { name: "", link: "", weather: "" };
+
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
-  const defaultValues = { name: "", link: "", weather: "" };
-  const { values, handleChange } = useForm(defaultValues);
+  const { values, handleChange, resetForm } = useForm(defaultValues);
+
+  useEffect(() => {
+    if (isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     onAddItem(values);
+
+    resetForm();
   }
 
   return (
@@ -51,6 +61,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
             className="modal__radio-input"
             id="hot"
             type="radio"
+            checked={values.weather === "hot"}
             name="weather"
             value="hot"
             onChange={handleChange}
@@ -62,6 +73,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
             className="modal__radio-input"
             id="warm"
             type="radio"
+            checked={values.weather === "warm"}
             name="weather"
             value="warm"
             onChange={handleChange}
@@ -73,6 +85,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
             className="modal__radio-input"
             id="cold"
             type="radio"
+            checked={values.weather === "cold"}
             name="weather"
             value="cold"
             onChange={handleChange}

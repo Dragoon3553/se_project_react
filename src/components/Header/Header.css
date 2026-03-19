@@ -37,7 +37,7 @@
   cursor: pointer;
 }
 
-.header__user-container {
+.header__profile {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -54,6 +54,11 @@
   background-color: transparent;
   width: 44px;
   height: 44px;
+}
+
+.header__nav-link {
+  color: rgba(0, 0, 0, 1);
+  text-decoration: none;
 }
 
 @media screen and (max-width: 722px) {
