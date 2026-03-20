@@ -20,9 +20,27 @@
   max-height: 496px;
 }
 
+.modal__title-container {
+  margin: 0 34px 12px 32px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .modal__caption {
-  margin: 0 0 12px 32px;
+  margin: 0;
   font-size: 20px;
+}
+
+.modal__delete-btn {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: rgba(255, 77, 0, 1);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  font-family: "Cabinet Grotesk", sans-serif;
+  cursor: pointer;
 }
 
 .modal__weather {

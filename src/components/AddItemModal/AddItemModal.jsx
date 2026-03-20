@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useForm } from "../../hooks/useForm";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-const defaultValues = { name: "", link: "", weather: "" };
+const defaultValues = {
+  name: "",
+  imageUrl: "",
+  weather: "",
+};
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
   const { values, handleChange, resetForm } = useForm(defaultValues);
@@ -45,12 +49,12 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
         Image{" "}
         <input
           type="url"
-          name="link"
+          name="imageUrl"
           className="modal__input"
           id="imgUrl"
           placeholder="Image URL"
           required
-          value={values.link}
+          value={values.imageUrl}
           onChange={handleChange}
         />
       </label>

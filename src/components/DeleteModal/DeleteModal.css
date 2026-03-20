@@ -1,0 +1,25 @@
+.modal__content_type_delete {
+  gap: 0;
+  padding: 60px;
+}
+
+.modal__close_type_delete {
+  background-image: url(../../assets/close_btn.png);
+}
+
+.modal__text {
+  text-align: center;
+  margin: 0 0 40px;
+}
+
+.modal__cancel-btn {
+  padding: 0;
+  margin: 24px 0 0;
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  font-family: "Cabinet Grotesk", sans-serif;
+  cursor: pointer;
+}
