@@ -20,8 +20,6 @@ function WeatherCard({ weatherData }) {
     weatherOption = filteredOptions[0];
   }
 
-  console.log("weatherOption.url:", weatherOption?.url);
-  console.log(weatherData.condition);
   return (
     <section className="weather-card">
       <p className="weather-card__temp">
