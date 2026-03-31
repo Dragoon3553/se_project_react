@@ -3,13 +3,20 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 import Title from "../Title/Title";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
+import { getWeatherType } from "../../utils/weatherApi";
 import "./Main.css";
 
 function Main({ clothingItems, isMobile, weatherData, handleCardClick }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
+  const weatherType = getWeatherType(weatherData.temp.F);
+
+  const filteredItems = clothingItems.filter((item) => {
+    return item.weather === weatherType;
+  });
+
   return (
-    <main>
+    <main className="main">
       {isMobile && <Title weatherData={weatherData} />}
       <WeatherCard weatherData={weatherData} />
       <section className="cards">
@@ -18,19 +25,17 @@ function Main({ clothingItems, isMobile, weatherData, handleCardClick }) {
           {currentTemperatureUnit} / You may want to wear:
         </p>
         <ul className="cards__list">
-          {clothingItems
-            .filter((item) => {
-              return item.weather === weatherData.type;
-            })
-            .map((item) => {
-              return (
-                <ItemCard
-                  key={item._id}
-                  item={item}
-                  onCardClick={handleCardClick}
-                />
-              );
-            })}
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item) => (
+              <ItemCard
+                key={item._id}
+                item={item}
+                onCardClick={handleCardClick}
+              />
+            ))
+          ) : (
+            <li>No items match the current weather ({weatherType}).</li>
+          )}
         </ul>
       </section>
     </main>

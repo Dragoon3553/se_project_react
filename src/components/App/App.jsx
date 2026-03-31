@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-// Component Imports
-import "./App.css";
+// 1) components
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
@@ -10,21 +9,19 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import MenuModal from "../MenuModal/MenuModal";
 import Profile from "../Profile/Profile";
-
-// Js Imports
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
-
-// Utils Imports
-import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import { coordinates, apiKey } from "../../utils/constants";
-import { addItem, getItems, removeItem } from "../../utils/api";
 import DeleteModal from "../DeleteModal/DeleteModal";
 
+// 2) context
+import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
+
+// 3) API / utils
+import { getWeather, filterWeatherData } from "../../utils/weatherApi";
+import { apiKey } from "../../utils/constants";
+import { getItems, addItem, removeItem } from "../../utils/api";
+import "./App.css";
+
 function App() {
-  const mobileBreakpoint = 722;
-
-  // UseStates
-
+  // 4) local state
   const [weatherData, setWeatherData] = useState({
     type: "",
     temp: { F: 999, C: 999 },
@@ -37,32 +34,70 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [isMobile, setIsMobile] = useState(false);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  const [geoError, setGeoError] = useState("");
 
-  // Functions
+  // 5) utility functions
+  const fetchWeather = ({ latitude, longitude }) => {
+    getWeather({ latitude, longitude }, apiKey)
+      .then((data) => setWeatherData(filterWeatherData(data)))
+      .catch((error) => {
+        console.error("Weather fetch failed:", error);
+        setGeoError("Unable to retrieve weather. Try again.");
+      });
+  };
 
+  // 6) mount effects
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeather({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.warn("Geolocation failed:", error);
+          setGeoError(
+            "Location access denied. Please allow location to get weather.",
+          );
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+      );
+    } else {
+      setGeoError("Geolocation not supported by your browser.");
+    }
+
+    getItems()
+      .then((data) => {
+        setClothingItems(data.reverse());
+      })
+      .catch((error) => {
+        console.error("Failed to fetch clothing items:", error);
+      });
+  }, []);
+
+  // 7) resize effect
+  useEffect(() => {
+    const updateIsMobile = () => setIsMobile(window.innerWidth <= 722);
+
+    updateIsMobile();
+    window.addEventListener("resize", updateIsMobile);
+    return () => window.removeEventListener("resize", updateIsMobile);
+  }, []);
+
+  // 8) event handlers
   const handleCardClick = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
   };
 
-  const handleAddClick = () => {
-    setActiveModal("add-garment");
-  };
-
-  const closeActiveModal = () => {
-    setActiveModal("");
-  };
-
-  const handleMenuClick = () => {
-    setActiveModal("menu");
-  };
-
-  const updateIsMobile = () => {
-    setIsMobile(window.innerWidth <= mobileBreakpoint);
-  };
+  const handleAddClick = () => setActiveModal("add-garment");
+  const closeActiveModal = () => setActiveModal("");
+  const handleMenuClick = () => setActiveModal("menu");
 
   const handleToggleSwitchChange = () =>
-    setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
+    setCurrentTemperatureUnit((prev) => (prev === "F" ? "C" : "F"));
 
   const handleDeleteClick = (card) => {
     setSelectedCard(card);
@@ -93,30 +128,7 @@ function App() {
       .catch(console.error);
   };
 
-  // UseEffects
-
-  useEffect(() => {
-    getWeather(coordinates, apiKey)
-      .then((data) => {
-        const filteredData = filterWeatherData(data);
-        setWeatherData(filteredData);
-      })
-      .catch(console.error);
-
-    getItems()
-      .then((data) => {
-        setClothingItems(data.reverse());
-      })
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    updateIsMobile();
-
-    window.addEventListener("resize", updateIsMobile);
-    return () => window.removeEventListener("resize", updateIsMobile);
-  }, []);
-
+  // 9) render output
   return (
     <div className="page">
       <CurrentTemperatureUnitContext.Provider
@@ -128,6 +140,7 @@ function App() {
             handleMenuClick={handleMenuClick}
             isMobile={isMobile}
             weatherData={weatherData}
+            geoError={geoError} // optional display
           />
           <Routes>
             <Route
@@ -153,6 +166,7 @@ function App() {
           </Routes>
           <Footer />
         </div>
+
         <AddItemModal
           onClose={closeActiveModal}
           isOpen={activeModal === "add-garment"}
