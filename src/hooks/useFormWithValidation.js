@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const isValidUrl = (string) => {
   try {
@@ -22,15 +22,15 @@ const useFormWithValidation = (defaultValues) => {
   const validateAll = () => {
     const newErrors = {};
     if (!values.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = "Name is required";
     }
     if (!values.imageUrl.trim()) {
-      newErrors.imageUrl = 'Image URL is required';
+      newErrors.imageUrl = "Image URL is required";
     } else if (!isValidUrl(values.imageUrl)) {
-      newErrors.imageUrl = 'Invalid URL';
+      newErrors.imageUrl = "Invalid URL";
     }
     if (!values.weather) {
-      newErrors.weather = 'Weather type is required';
+      newErrors.weather = "Weather type is required";
     }
     setErrors(newErrors);
     const valid = Object.keys(newErrors).length === 0;

@@ -16,7 +16,7 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 
 // 3) API / utils
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import { apiKey } from "../../utils/constants";
+import { apiKey, defaultCoordinates } from "../../utils/constants";
 import { getItems, addItem, removeItem } from "../../utils/api";
 import "./App.css";
 
@@ -58,14 +58,14 @@ function App() {
         },
         (error) => {
           console.warn("Geolocation failed:", error);
-          setGeoError(
-            "Location access denied. Please allow location to get weather.",
-          );
+          fetchWeather(defaultCoordinates);
+          setGeoError("Using default location for weather.");
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
       );
     } else {
-      setGeoError("Geolocation not supported by your browser.");
+      fetchWeather(defaultCoordinates);
+      setGeoError("Geolocation not supported. Using default location.");
     }
 
     getItems()
@@ -125,7 +125,9 @@ function App() {
         setClothingItems((prev) => [data, ...prev]);
         closeActiveModal();
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.error("Failed to add clothing item:", error);
+      });
   };
 
   // 9) render output
@@ -160,6 +162,7 @@ function App() {
                 <Profile
                   clothingItems={clothingItems}
                   handleCardClick={handleCardClick}
+                  handleAddClick={handleAddClick}
                 />
               }
             />

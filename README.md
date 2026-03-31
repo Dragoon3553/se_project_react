@@ -20,3 +20,7 @@ The app will use location data to gather the current weather from a free weather
 ## Deployment
 
 - [Deployment Link](https://dragoon3553.github.io/se_project_react/)
+
+## Project Pitch Video
+
+Check out [this video](https://www.loom.com/share/27d7a856661944be8d416e062e83be1a), where I describe my project and some challenges I faced while building it.

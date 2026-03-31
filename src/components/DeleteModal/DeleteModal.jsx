@@ -4,7 +4,6 @@ function DeleteModal({ isOpen, onClose, handleItemDelete, card }) {
   function handleDelete() {
     if (!card) return;
     handleItemDelete(card._id);
-    onClose();
   }
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
