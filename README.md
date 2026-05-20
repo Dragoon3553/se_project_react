@@ -17,10 +17,8 @@ The app will use location data to gather the current weather from a free weather
 - HTML
 - CSS Flexbox
 
-## Deployment
+## Deployment / Links
 
 - [Deployment Link](https://dragoon3553.github.io/se_project_react/)
-
-## Project Pitch Video
-
-Check out [this video](https://www.loom.com/share/27d7a856661944be8d416e062e83be1a), where I describe my project and some challenges I faced while building it.
+- [Backend Repository Link](https://github.com/Dragoon3553/se_project_express)
+- Check out [this video](https://www.loom.com/share/27d7a856661944be8d416e062e83be1a), where I describe my project and some challenges I faced while building it.
