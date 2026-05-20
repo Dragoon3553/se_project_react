@@ -28,7 +28,7 @@ export const checkToken = (token) => {
   return fetch(`${baseUrl}/users/me`, {
     method: "GET",
     headers: {
-      headers,
+      ...headers,
       authorization: `Bearer ${token}`,
     },
   }).then(handleServerResponse);

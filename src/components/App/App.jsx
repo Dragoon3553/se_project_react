@@ -49,8 +49,8 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [geoError, setGeoError] = useState("");
   const [currentUser, setCurrentUser] = useState({
-    name: "User",
-    avatarUrl: "",
+    name: "",
+    avatar: "",
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -135,23 +135,6 @@ function App() {
       .catch(console.error);
   };
 
-  const onAddItem = (inputValues) => {
-    const newCardData = {
-      name: inputValues.name,
-      imageUrl: inputValues.imageUrl,
-      weather: inputValues.weather,
-    };
-
-    addItem(newCardData)
-      .then((data) => {
-        setClothingItems((prev) => [data, ...prev]);
-        closeActiveModal();
-      })
-      .catch((error) => {
-        console.error("Failed to add clothing item:", error);
-      });
-  };
-
   // Registration Handler
   const handleRegistration = (inputValues) => {
     const newUserData = {
@@ -165,6 +148,7 @@ function App() {
       .then((res) => {
         // On successful registration
         closeActiveModal();
+        setCurrentUser({ name: res.name, avatar: res.avatar });
         setIsLoggedIn(true);
       })
       .catch(console.error);
@@ -181,13 +165,43 @@ function App() {
     auth
       .signin({ email, password })
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem("jwt", res.token);
-          setIsLoggedIn(true);
-          closeActiveModal();
+        if (!res.token) {
+          return Promise.reject(new Error("No token returned"));
         }
+
+        localStorage.setItem("jwt", res.token);
+        console.log(res.token);
+        return auth.checkToken(res.token);
+      })
+      .then((user) => {
+        setCurrentUser({ name: user.name, avatar: user.avatar });
+        setIsLoggedIn(true);
+        closeActiveModal();
       })
       .catch(console.error);
+  };
+
+  const onAddItem = (inputValues) => {
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      console.error;
+      return;
+    }
+
+    const newCardData = {
+      name: inputValues.name,
+      imageUrl: inputValues.imageUrl,
+      weather: inputValues.weather,
+    };
+
+    addItem(newCardData, token)
+      .then((data) => {
+        setClothingItems((prev) => [data, ...prev]);
+        closeActiveModal();
+      })
+      .catch((error) => {
+        console.error("Failed to add clothing item:", error);
+      });
   };
 
   // Render Output

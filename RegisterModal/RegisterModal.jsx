@@ -25,9 +25,6 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
     evt.preventDefault();
     setHasSubmitted(true);
     const isFormValid = validateAll();
-    console.log("Validation result:", isFormValid);
-    console.log("Current errors:", errors);
-    console.log("Current values:", values);
     if (isFormValid) {
       handleRegistration(values);
       setHasSubmitted(false);

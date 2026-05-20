@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+
+// Context Exports
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+import LoginContext from "../../contexts/LoginContext";
 
 const defaultValues = {
   name: "",
@@ -9,6 +13,9 @@ const defaultValues = {
 };
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
+  const { currentUser } = useContext(CurrentUserContext);
+  const { isLoggedIn } = useContext(LoginContext);
+
   const { values, handleChange, errors, resetForm, validateAll } =
     useFormWithValidation(defaultValues);
   const [hasSubmitted, setHasSubmitted] = useState(false);
