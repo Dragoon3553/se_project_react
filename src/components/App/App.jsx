@@ -49,6 +49,7 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [geoError, setGeoError] = useState("");
   const [currentUser, setCurrentUser] = useState({
+    _id: "",
     name: "",
     avatar: "",
   });
@@ -148,7 +149,7 @@ function App() {
       .then((res) => {
         // On successful registration
         closeActiveModal();
-        setCurrentUser({ name: res.name, avatar: res.avatar });
+        setCurrentUser({ _id: res._id, name: res.name, avatar: res.avatar });
         setIsLoggedIn(true);
       })
       .catch(console.error);
@@ -170,11 +171,10 @@ function App() {
         }
 
         localStorage.setItem("jwt", res.token);
-        console.log(res.token);
         return auth.checkToken(res.token);
       })
       .then((user) => {
-        setCurrentUser({ name: user.name, avatar: user.avatar });
+        setCurrentUser({ _id: user._id, name: user.name, avatar: user.avatar });
         setIsLoggedIn(true);
         closeActiveModal();
       })

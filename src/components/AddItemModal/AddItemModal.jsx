@@ -32,7 +32,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     setHasSubmitted(true);
     const isFormValid = validateAll();
     if (isFormValid) {
-      onAddItem(values);
+      onAddItem({ ...values, owner: currentUser._id });
       setHasSubmitted(false);
     }
   }
