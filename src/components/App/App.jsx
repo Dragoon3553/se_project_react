@@ -140,7 +140,7 @@ function App() {
   const handleRegistration = (inputValues) => {
     const newUserData = {
       name: inputValues.name,
-      avatar: inputValues.avatar,
+      avatar: inputValues.avatar ? inputValues.avatar : undefined,
       email: inputValues.email,
       password: inputValues.password,
     };
@@ -184,7 +184,7 @@ function App() {
   const onAddItem = (inputValues) => {
     const token = localStorage.getItem("jwt");
     if (!token) {
-      console.error;
+      console.error("No authentication token found");
       return;
     }
 
@@ -192,6 +192,7 @@ function App() {
       name: inputValues.name,
       imageUrl: inputValues.imageUrl,
       weather: inputValues.weather,
+      owner: inputValues.owner,
     };
 
     addItem(newCardData, token)
