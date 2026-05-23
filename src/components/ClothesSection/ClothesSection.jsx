@@ -2,6 +2,7 @@ import { useContext } from "react";
 
 // Context Import
 import CurrentUserContext from "../../contexts/CurrentUserContext";
+import LoginContext from "../../contexts/LoginContext";
 
 import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";

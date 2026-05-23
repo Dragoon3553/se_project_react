@@ -33,3 +33,17 @@ export const removeItem = (itemId) => {
     headers,
   }).then(handleServerResponse);
 };
+
+export const editProfile = ({ name, avatar }, token) => {
+  return fetch(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: {
+      ...headers,
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify({
+      name,
+      avatar,
+    }),
+  }).then(handleServerResponse);
+};

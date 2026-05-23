@@ -29,9 +29,11 @@ import LoginContext from "../../contexts/LoginContext";
 // Utils
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { apiKey, defaultCoordinates } from "../../utils/constants";
-import { getItems, addItem, removeItem } from "../../utils/api";
+import { getItems, addItem, removeItem, editProfile } from "../../utils/api";
+import { getToken, setToken } from "../../utils/token";
 import * as auth from "../../utils/auth";
 import "./App.css";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 
 function App() {
   // Local States
@@ -122,6 +124,7 @@ function App() {
   const handleMenuClick = () => setActiveModal("menu");
   const handleRegistrationClick = () => setActiveModal("register");
   const handleLoginClick = () => setActiveModal("login");
+  const handleEditProfileClick = () => setActiveModal("edit-profile");
   const closeActiveModal = () => setActiveModal("");
 
   const handleToggleSwitchChange = () =>
@@ -170,7 +173,7 @@ function App() {
           return Promise.reject(new Error("No token returned"));
         }
 
-        localStorage.setItem("jwt", res.token);
+        setToken(res.token);
         return auth.checkToken(res.token);
       })
       .then((user) => {
@@ -182,7 +185,7 @@ function App() {
   };
 
   const onAddItem = (inputValues) => {
-    const token = localStorage.getItem("jwt");
+    const token = getToken();
     if (!token) {
       console.error("No authentication token found");
       return;
@@ -205,9 +208,31 @@ function App() {
       });
   };
 
+  const onEditProfile = (inputValues) => {
+    const token = getToken();
+    if (!token) {
+      console.error("No authentication token found");
+      return;
+    }
+
+    const updatedProfileData = {
+      name: inputValues.name,
+      avatar: inputValues.avatar ? inputValues.avatar : undefined,
+    };
+
+    editProfile(updatedProfileData, token)
+      .then((data) => {
+        setCurrentUser({ name: data.name, avatar: data.avatar });
+        closeActiveModal();
+      })
+      .catch((error) => {
+        console.error("Failed to edit profile:", error);
+      });
+  };
+
   // Render Output
   return (
-    <LoginContext.Provider value={{ isLoggedIn }}>
+    <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       <CurrentUserContext.Provider value={{ currentUser }}>
         <div className="page">
           <CurrentTemperatureUnitContext.Provider
@@ -242,6 +267,7 @@ function App() {
                         clothingItems={clothingItems}
                         handleCardClick={handleCardClick}
                         handleAddClick={handleAddClick}
+                        handleEditProfileClick={handleEditProfileClick}
                         card={selectedCard}
                       />
                     </ProtectedRoute>
@@ -282,6 +308,11 @@ function App() {
               isOpen={activeModal === "register"}
               onClose={closeActiveModal}
               handleRegistration={handleRegistration}
+            />
+            <EditProfileModal
+              isOpen={activeModal === "edit-profile"}
+              onClose={closeActiveModal}
+              onEditProfile={onEditProfile}
             />
           </CurrentTemperatureUnitContext.Provider>
         </div>

@@ -19,15 +19,16 @@ const LoginModal = ({ isOpen, onClose, handleLogin }) => {
     }
   }, [isOpen]);
 
-  function handleSubmit(evt) {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     setHasSubmitted(true);
+
     const isFormValid = validateAll();
     if (isFormValid) {
       handleLogin(values);
       setHasSubmitted(false);
     }
-  }
+  };
 
   return (
     <ModalWithForm

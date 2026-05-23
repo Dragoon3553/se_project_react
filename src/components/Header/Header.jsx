@@ -1,14 +1,15 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 
+// Context Imports
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+import LoginContext from "../../contexts/LoginContext";
+
 import "./Header.css";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import logo from "../../assets/wtwr_logo.svg";
 import avatar from "../../assets/avatar.png";
-
-// Context Imports
-import CurrentUserContext from "../../contexts/CurrentUserContext";
-import LoginContext from "../../contexts/LoginContext";
+import { getInitial, generateBackground } from "../../utils/avatar";
 
 export const currentDate = new Date().toLocaleString("default", {
   month: "long",
@@ -26,37 +27,8 @@ function Header({
   const { currentUser } = useContext(CurrentUserContext);
   const { isLoggedIn } = useContext(LoginContext);
 
-  const getInitial = (name) => {
-    return `${name.split(" ")[0][0]}`;
-  };
-  const generateBackground = (name) => {
-    let hash = 0;
-    let i;
-
-    for (i = 0; i < name.length; i += 1) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-
-      let color = "#";
-
-      for (i = 0; i < 3; i += 1) {
-        const value = (hash >> (i * 8)) & 0xff;
-        color += `00${value.toString(16)}`.slice(-2);
-      }
-      return color;
-    }
-  };
-
-  let initial = getInitial(currentUser.name);
-  let color = generateBackground(currentUser.name);
-  const customStyle = {
-    display: "flex",
-    height: "50px",
-    width: "50px",
-    borderRadius: "100px",
-    color: "white",
-    background: color,
-    margin: "auto",
-  };
+  const initial = getInitial(currentUser.name);
+  const color = generateBackground(currentUser.name);
 
   return (
     <header className="header">
@@ -97,8 +69,8 @@ function Header({
             + Add Clothes
           </button>
         )}
-        <NavLink className="header__nav-link" to="/profile">
-          {isLoggedIn && (
+        {isLoggedIn && (
+          <NavLink className="header__nav-link" to="/profile">
             <div className="header__profile">
               <p className="header__username">{currentUser.name}</p>
               {currentUser.avatar ? (
@@ -108,13 +80,16 @@ function Header({
                   className="header__avatar"
                 />
               ) : (
-                <div className="header__avatar" style={customStyle}>
-                  <span style={{ margin: "auto" }}> {initial} </span>
+                <div
+                  className="header__avatar"
+                  style={{ backgroundColor: color }}
+                >
+                  {initial}
                 </div>
               )}
             </div>
-          )}
-        </NavLink>
+          </NavLink>
+        )}
       </div>
       {isMobile && (
         <button
