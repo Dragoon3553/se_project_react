@@ -1,6 +1,7 @@
 import { useContext } from "react";
+
 // Context Imports
-import LoginContext from "../../contexts/LoginContext";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 import "./Profile.css";
 import ClothesSection from "../ClothesSection/ClothesSection";
@@ -13,13 +14,17 @@ function Profile({
   handleEditProfileClick,
   card,
 }) {
-  // const { isLoggedIn } = useContext(LoginContext);
+  const { currentUser } = useContext(CurrentUserContext);
+
+  const filteredItems = clothingItems.filter((item) => {
+    return item.owner === currentUser._id;
+  });
 
   return (
     <section className="profile">
       <Sidebar handleEditProfileClick={handleEditProfileClick} />
       <ClothesSection
-        clothingItems={clothingItems}
+        filteredItems={filteredItems}
         handleCardClick={handleCardClick}
         handleAddClick={handleAddClick}
         card={card}

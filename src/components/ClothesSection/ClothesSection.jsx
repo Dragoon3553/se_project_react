@@ -8,7 +8,7 @@ import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
 
 function ClothesSection({
-  clothingItems,
+  filteredItems,
   handleCardClick,
   handleAddClick,
   card,
@@ -31,7 +31,7 @@ function ClothesSection({
       </div>
       {isOwn && (
         <ul className="clothes-section__list">
-          {clothingItems.map((item) => {
+          {filteredItems.map((item) => {
             return (
               <ItemCard
                 key={item._id}

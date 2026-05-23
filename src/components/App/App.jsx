@@ -130,15 +130,6 @@ function App() {
   const handleToggleSwitchChange = () =>
     setCurrentTemperatureUnit((prev) => (prev === "F" ? "C" : "F"));
 
-  const handleItemDelete = (itemId) => {
-    removeItem(itemId)
-      .then(() => {
-        setClothingItems((prev) => prev.filter((item) => item._id !== itemId));
-        closeActiveModal();
-      })
-      .catch(console.error);
-  };
-
   // Registration Handler
   const handleRegistration = (inputValues) => {
     const newUserData = {
@@ -222,12 +213,27 @@ function App() {
 
     editProfile(updatedProfileData, token)
       .then((data) => {
-        setCurrentUser({ name: data.name, avatar: data.avatar });
+        setCurrentUser({ _id: data._id, name: data.name, avatar: data.avatar });
         closeActiveModal();
       })
       .catch((error) => {
         console.error("Failed to edit profile:", error);
       });
+  };
+
+  const handleItemDelete = (itemId) => {
+    const token = getToken();
+    if (!token) {
+      console.error("No authentication token found");
+      return;
+    }
+
+    removeItem(itemId, token)
+      .then(() => {
+        setClothingItems((prev) => prev.filter((item) => item._id !== itemId));
+        closeActiveModal();
+      })
+      .catch(console.error);
   };
 
   // Render Output
