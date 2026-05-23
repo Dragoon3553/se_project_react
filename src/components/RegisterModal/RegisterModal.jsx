@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import useFormWithValidation from "../src/hooks/useFormWithValidation";
-import ModalWithForm from "../src/components/ModalWithForm/ModalWithForm";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 const defaultValues = {
   name: "",

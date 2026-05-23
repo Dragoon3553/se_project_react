@@ -12,6 +12,7 @@ function Profile({
   handleCardClick,
   handleAddClick,
   handleEditProfileClick,
+  handleLogout,
   card,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
@@ -22,7 +23,10 @@ function Profile({
 
   return (
     <section className="profile">
-      <Sidebar handleEditProfileClick={handleEditProfileClick} />
+      <Sidebar
+        handleEditProfileClick={handleEditProfileClick}
+        handleLogout={handleLogout}
+      />
       <ClothesSection
         filteredItems={filteredItems}
         handleCardClick={handleCardClick}

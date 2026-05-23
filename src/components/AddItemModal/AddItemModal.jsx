@@ -10,6 +10,7 @@ const defaultValues = {
   name: "",
   imageUrl: "",
   weather: "",
+  owner: "",
 };
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {

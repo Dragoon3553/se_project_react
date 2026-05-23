@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import useFormWithValidation from "../src/hooks/useFormWithValidation";
-import ModalWithForm from "../src/components/ModalWithForm/ModalWithForm";
+
+import useFormWithValidation from "../../hooks/useFormWithValidation";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "./LoginModal.css";
 
 const defaultValues = {
   email: "",
   password: "",
 };
 
-const LoginModal = ({ isOpen, onClose, handleLogin }) => {
+const LoginModal = ({ isOpen, onClose, handleLogin, errorMessage }) => {
   const { values, handleChange, errors, resetForm, validateAll } =
     useFormWithValidation(defaultValues);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -54,12 +56,15 @@ const LoginModal = ({ isOpen, onClose, handleLogin }) => {
           <span className="modal__error">{errors.email}</span>
         )}
       </label>
-      <label htmlFor="password" className="modal__label">
-        Password{" "}
+      <label
+        htmlFor="password"
+        className={`modal__label ${errorMessage ? "modal__label_incorrect" : ""}`}
+      >
+        {errorMessage ? errorMessage : "Password"}
         <input
           type="password"
           name="password"
-          className={`modal__input ${hasSubmitted && errors.password ? "modal__input_invalid" : ""}`}
+          className={`modal__input ${hasSubmitted && errors.password ? "modal__input_invalid" : errorMessage ? "modal__input_incorrect" : ""}`}
           id="password"
           placeholder="Password"
           value={values.password}

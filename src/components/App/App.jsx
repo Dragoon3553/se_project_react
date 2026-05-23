@@ -18,8 +18,9 @@ import MenuModal from "../MenuModal/MenuModal";
 import Profile from "../Profile/Profile";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import LoginModal from "../../../LoginModal/LoginModal";
-import RegisterModal from "../../../RegisterModal/RegisterModal";
+import LoginModal from "../LoginModal/LoginModal";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 
 // Contexts
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
@@ -30,10 +31,9 @@ import LoginContext from "../../contexts/LoginContext";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { apiKey, defaultCoordinates } from "../../utils/constants";
 import { getItems, addItem, removeItem, editProfile } from "../../utils/api";
-import { getToken, setToken } from "../../utils/token";
+import { getToken, setToken, removeToken } from "../../utils/token";
 import * as auth from "../../utils/auth";
 import "./App.css";
-import EditProfileModal from "../EditProfileModal/EditProfileModal";
 
 function App() {
   // Local States
@@ -50,12 +50,13 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [geoError, setGeoError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     _id: "",
     name: "",
     avatar: "",
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Navigate & Location Hooks
   const navigate = useNavigate();
@@ -73,6 +74,22 @@ function App() {
 
   // Mount Effects
   useEffect(() => {
+    const token = getToken();
+
+    if (token) {
+      auth
+        .checkToken(token)
+        .then((user) => {
+          setCurrentUser({
+            _id: user._id,
+            name: user.name,
+            avatar: user.avatar,
+          });
+          setIsLoggedIn(true);
+        })
+        .catch(console.error);
+    }
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -149,7 +166,7 @@ function App() {
       .catch(console.error);
   };
 
-  // Authorization Handler
+  // Authorization / Login Handler
   const handleLogin = (inputValues) => {
     const { email, password } = inputValues;
     // If email or password are empty, return without sending a request
@@ -172,9 +189,22 @@ function App() {
         setIsLoggedIn(true);
         closeActiveModal();
       })
-      .catch(console.error);
+      .catch((err) => {
+        setErrorMessage("Incorrect password");
+        console.error(err);
+      });
   };
 
+  // Logout Handler
+  const handleLogout = () => {
+    removeToken();
+    navigate("/");
+    setCurrentUser({ _id: "", name: "", avatar: "" });
+    setIsLoggedIn(false);
+    closeActiveModal();
+  };
+
+  // Add Item Handler
   const onAddItem = (inputValues) => {
     const token = getToken();
     if (!token) {
@@ -199,6 +229,7 @@ function App() {
       });
   };
 
+  // Edit Profile Handler
   const onEditProfile = (inputValues) => {
     const token = getToken();
     if (!token) {
@@ -221,6 +252,7 @@ function App() {
       });
   };
 
+  // Delete Item Handler
   const handleItemDelete = (itemId) => {
     const token = getToken();
     if (!token) {
@@ -274,6 +306,7 @@ function App() {
                         handleCardClick={handleCardClick}
                         handleAddClick={handleAddClick}
                         handleEditProfileClick={handleEditProfileClick}
+                        handleLogout={handleLogout}
                         card={selectedCard}
                       />
                     </ProtectedRoute>
@@ -309,6 +342,7 @@ function App() {
               isOpen={activeModal === "login"}
               onClose={closeActiveModal}
               handleLogin={handleLogin}
+              errorMessage={errorMessage}
             />
             <RegisterModal
               isOpen={activeModal === "register"}

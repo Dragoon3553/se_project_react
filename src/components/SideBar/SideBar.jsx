@@ -10,20 +10,14 @@ import avatar from "../../assets/avatar.png";
 import { getInitial, generateBackground } from "../../utils/avatar";
 import { removeToken } from "../../utils/token";
 
-function Sidebar({ handleEditProfileClick }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function Sidebar({ handleEditProfileClick, handleLogout }) {
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
   const initial = getInitial(currentUser.name);
   const color = generateBackground(currentUser.name);
-
-  const signOut = () => {
-    removeToken();
-    navigate("/");
-    setIsLoggedIn(false);
-  };
 
   return (
     <aside className="sidebar">
@@ -53,7 +47,11 @@ function Sidebar({ handleEditProfileClick }) {
       >
         Change profile data
       </button>
-      <button onClick={signOut} type="button" className="sidebar__logout-btn">
+      <button
+        onClick={handleLogout}
+        type="button"
+        className="sidebar__logout-btn"
+      >
         Log out
       </button>
     </aside>
