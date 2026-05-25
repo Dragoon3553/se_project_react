@@ -307,7 +307,6 @@ function App() {
                         handleAddClick={handleAddClick}
                         handleEditProfileClick={handleEditProfileClick}
                         handleLogout={handleLogout}
-                        card={selectedCard}
                       />
                     </ProtectedRoute>
                   }
