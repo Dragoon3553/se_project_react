@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Routes,
   Route,
@@ -52,6 +52,7 @@ function App() {
   const [geoError, setGeoError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({
     _id: "",
     name: "",
@@ -61,6 +62,7 @@ function App() {
   // Navigate & Location Hooks
   const navigate = useNavigate();
   const location = useLocation();
+  const hasMounted = useRef(false);
 
   // Fetch Weather Function
   const fetchWeather = ({ latitude, longitude }) => {
@@ -79,6 +81,12 @@ function App() {
     if (token) {
       auth
         .checkToken(token)
+        // .then(
+        //   (user) =>
+        //     new Promise((resolve) => {
+        //       setTimeout(() => resolve(user), 3000);
+        //     }),
+        // )
         .then((user) => {
           setCurrentUser({
             _id: user._id,
@@ -86,6 +94,9 @@ function App() {
             avatar: user.avatar,
           });
           setIsLoggedIn(true);
+          setIsLoading(false);
+          const lastRoute = localStorage.getItem("lastRoute");
+          navigate(lastRoute);
         })
         .catch(console.error);
     }
@@ -128,6 +139,17 @@ function App() {
     return () => window.removeEventListener("resize", updateIsMobile);
   }, []);
 
+  // Route Path Save Effect
+  useEffect(() => {
+    // Saves current path to localStorage only if component has mounted, preventing overwrite on initial load
+    if (hasMounted.current) {
+      localStorage.setItem("lastRoute", location?.pathname);
+      console.log(location.pathname);
+    } else {
+      hasMounted.current = true;
+    }
+  }, [location.pathname]);
+
   // SetActiveModal Handlers
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -162,6 +184,7 @@ function App() {
         closeActiveModal();
         setCurrentUser({ _id: res._id, name: res.name, avatar: res.avatar });
         setIsLoggedIn(true);
+        setIsLoading(false);
       })
       .catch(console.error);
   };
@@ -187,6 +210,7 @@ function App() {
       .then((user) => {
         setCurrentUser({ _id: user._id, name: user.name, avatar: user.avatar });
         setIsLoggedIn(true);
+        setIsLoading(false);
         closeActiveModal();
       })
       .catch((err) => {
@@ -201,6 +225,7 @@ function App() {
     navigate("/");
     setCurrentUser({ _id: "", name: "", avatar: "" });
     setIsLoggedIn(false);
+    setIsLoading(true);
     closeActiveModal();
   };
 
@@ -289,18 +314,20 @@ function App() {
                 <Route
                   path="/"
                   element={
-                    <Main
-                      clothingItems={clothingItems}
-                      isMobile={isMobile}
-                      weatherData={weatherData}
-                      handleCardClick={handleCardClick}
-                    />
+                    <ProtectedRoute anonymous>
+                      <Main
+                        clothingItems={clothingItems}
+                        isMobile={isMobile}
+                        weatherData={weatherData}
+                        handleCardClick={handleCardClick}
+                      />
+                    </ProtectedRoute>
                   }
                 />
                 <Route
                   path="/profile"
                   element={
-                    <ProtectedRoute anonymous>
+                    <ProtectedRoute isLoading={isLoading}>
                       <Profile
                         clothingItems={clothingItems}
                         handleCardClick={handleCardClick}
