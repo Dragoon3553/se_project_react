@@ -1,13 +1,37 @@
-import "./ItemCard.css";
+import { useContext } from "react";
 
-function ItemCard({ item, onCardClick }) {
+// Context Import
+import LoginContext from "../../contexts/LoginContext";
+
+import "./ItemCard.css";
+import likeDefault from "../../assets/like_default.png";
+import likeActive from "../../assets/like_active.png";
+
+function ItemCard({ item, onCardClick, onCardLike }) {
+  const { isLoggedIn } = useContext(LoginContext);
+
   const handleCardClick = () => {
     onCardClick(item);
   };
 
+  const handleLike = () => {
+    onCardLike(item);
+  };
+
   return (
     <li className="card">
-      <h2 className="card__name">{item.name}</h2>
+      <div className="card__content">
+        <h2 className="card__name">{item.name}</h2>
+        {isLoggedIn && (
+          <button type="button" className="card__like-btn">
+            <img
+              src={likeDefault}
+              alt={`isLiked ? 'like active' : 'like default'`}
+              className="card__like-btn_img"
+            />
+          </button>
+        )}
+      </div>
       <img
         onClick={handleCardClick}
         className="card__img"

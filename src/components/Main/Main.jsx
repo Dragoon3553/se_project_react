@@ -6,7 +6,13 @@ import ItemCard from "../ItemCard/ItemCard";
 import { getWeatherType } from "../../utils/weatherApi";
 import "./Main.css";
 
-function Main({ clothingItems, isMobile, weatherData, handleCardClick }) {
+function Main({
+  clothingItems,
+  isMobile,
+  weatherData,
+  handleCardClick,
+  onCardLike,
+}) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
 
   const weatherType = getWeatherType(weatherData.temp.F);
@@ -31,6 +37,7 @@ function Main({ clothingItems, isMobile, weatherData, handleCardClick }) {
                 key={item._id}
                 item={item}
                 onCardClick={handleCardClick}
+                onCardLike={onCardLike}
               />
             ))
           ) : (

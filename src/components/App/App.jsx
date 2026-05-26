@@ -30,7 +30,14 @@ import LoginContext from "../../contexts/LoginContext";
 // Utils
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { apiKey, defaultCoordinates } from "../../utils/constants";
-import { getItems, addItem, removeItem, editProfile } from "../../utils/api";
+import {
+  getItems,
+  addItem,
+  removeItem,
+  editProfile,
+  addCardLike,
+  removeCardLike,
+} from "../../utils/api";
 import { getToken, setToken, removeToken } from "../../utils/token";
 import * as auth from "../../utils/auth";
 import "./App.css";
@@ -81,12 +88,6 @@ function App() {
     if (token) {
       auth
         .checkToken(token)
-        // .then(
-        //   (user) =>
-        //     new Promise((resolve) => {
-        //       setTimeout(() => resolve(user), 3000);
-        //     }),
-        // )
         .then((user) => {
           setCurrentUser({
             _id: user._id,
@@ -144,7 +145,6 @@ function App() {
     // Saves current path to localStorage only if component has mounted, preventing overwrite on initial load
     if (hasMounted.current) {
       localStorage.setItem("lastRoute", location?.pathname);
-      console.log(location.pathname);
     } else {
       hasMounted.current = true;
     }
@@ -159,6 +159,25 @@ function App() {
     setSelectedCard(card);
     setActiveModal("confirm-delete");
   };
+  const handleCardLike = ({ id, isLiked }) => {
+    const token = getToken();
+    !isLiked
+      ? addCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item._id === id ? updatedCard : item)),
+            );
+          })
+          .catch(console.error)
+      : removeCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item._id === id ? updatedCard : item)),
+            );
+          })
+          .catch(console.error);
+  };
+
   const handleAddClick = () => setActiveModal("add-garment");
   const handleMenuClick = () => setActiveModal("menu");
   const handleRegistrationClick = () => setActiveModal("register");
@@ -320,6 +339,7 @@ function App() {
                         isMobile={isMobile}
                         weatherData={weatherData}
                         handleCardClick={handleCardClick}
+                        onCardLike={handleCardLike}
                       />
                     </ProtectedRoute>
                   }
