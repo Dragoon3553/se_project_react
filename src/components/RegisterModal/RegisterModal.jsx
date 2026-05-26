@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "./RegisterModal.css";
 
 const defaultValues = {
   name: "",
@@ -9,10 +11,20 @@ const defaultValues = {
   password: "",
 };
 
-const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
+const RegisterModal = ({
+  isOpen,
+  handleLoginClick,
+  onClose,
+  handleRegistration,
+}) => {
   const { values, handleChange, errors, resetForm, validateAll } =
     useFormWithValidation(defaultValues);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const handleLogin = () => {
+    onClose();
+    handleLoginClick();
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -31,6 +43,14 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
     }
   }
 
+  // Extra Button Variable
+  const loginButton = (
+    <button onClick={handleLogin} type="button" className="modal__login-btn">
+      {" "}
+      or Log in
+    </button>
+  );
+
   return (
     <ModalWithForm
       title="Sign up"
@@ -39,6 +59,7 @@ const RegisterModal = ({ isOpen, onClose, handleRegistration }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      extraButton={loginButton}
     >
       <label htmlFor="email" className="modal__label">
         Email{" "}

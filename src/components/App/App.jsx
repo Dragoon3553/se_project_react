@@ -386,12 +386,14 @@ function App() {
             />
             <LoginModal
               isOpen={activeModal === "login"}
+              handleRegistrationClick={handleRegistrationClick}
               onClose={closeActiveModal}
               handleLogin={handleLogin}
               errorMessage={errorMessage}
             />
             <RegisterModal
               isOpen={activeModal === "register"}
+              handleLoginClick={handleLoginClick}
               onClose={closeActiveModal}
               handleRegistration={handleRegistration}
             />

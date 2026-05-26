@@ -9,10 +9,21 @@ const defaultValues = {
   password: "",
 };
 
-const LoginModal = ({ isOpen, onClose, handleLogin, errorMessage }) => {
+const LoginModal = ({
+  isOpen,
+  handleRegistrationClick,
+  onClose,
+  handleLogin,
+  errorMessage,
+}) => {
   const { values, handleChange, errors, resetForm, validateAll } =
     useFormWithValidation(defaultValues);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const handleRegisterClick = () => {
+    onClose();
+    handleRegistrationClick();
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -32,6 +43,17 @@ const LoginModal = ({ isOpen, onClose, handleLogin, errorMessage }) => {
     }
   };
 
+  // Extra Button Variable
+  const registerButton = (
+    <button
+      onClick={handleRegisterClick}
+      type="button"
+      className="modal__register-btn"
+    >
+      or Register
+    </button>
+  );
+
   return (
     <ModalWithForm
       title="Log in"
@@ -40,6 +62,7 @@ const LoginModal = ({ isOpen, onClose, handleLogin, errorMessage }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      extraButton={registerButton}
     >
       <label htmlFor="email" className="modal__label">
         Email{" "}

@@ -1,4 +1,4 @@
-.modal__register-btn {
+.modal__login-btn {
   margin: 0;
   padding: 0;
   border: none;
@@ -7,12 +7,4 @@
   line-height: 20px;
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
-}
-
-.modal__label_incorrect {
-  color: rgba(255, 77, 0, 1);
-}
-
-.modal__input_incorrect {
-  color: rgba(255, 77, 0, 1);
 }

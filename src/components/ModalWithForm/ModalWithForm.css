@@ -105,6 +105,11 @@
   cursor: pointer;
 }
 
+.modal__buttons {
+  display: flex;
+  gap: 8px;
+}
+
 .modal__submit-btn {
   max-width: 124px;
   padding: 8px 16px;
