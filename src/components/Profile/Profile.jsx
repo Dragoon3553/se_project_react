@@ -13,6 +13,7 @@ function Profile({
   handleAddClick,
   handleEditProfileClick,
   handleLogout,
+  onCardLike,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
 
@@ -30,6 +31,7 @@ function Profile({
         filteredItems={filteredItems}
         handleCardClick={handleCardClick}
         handleAddClick={handleAddClick}
+        onCardLike={onCardLike}
       />
     </section>
   );

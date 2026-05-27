@@ -4,7 +4,6 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 // Context Exports
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import LoginContext from "../../contexts/LoginContext";
 
 const defaultValues = {
   name: "",
@@ -15,7 +14,6 @@ const defaultValues = {
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
   const { currentUser } = useContext(CurrentUserContext);
-  const { isLoggedIn } = useContext(LoginContext);
 
   const { values, handleChange, errors, resetForm, validateAll } =
     useFormWithValidation(defaultValues);
@@ -52,7 +50,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
           type="text"
           name="name"
           className={`modal__input ${hasSubmitted && errors.name ? "modal__input_invalid" : ""}`}
-          id="name"
+          id="addItem-name"
           placeholder="Name"
           value={values.name}
           onChange={handleChange}
@@ -67,7 +65,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
           type="url"
           name="imageUrl"
           className={`modal__input ${hasSubmitted && errors.imageUrl ? "modal__input_invalid" : ""}`}
-          id="imgUrl"
+          id="addItem-imgUrl"
           placeholder="Image URL"
           value={values.imageUrl}
           onChange={handleChange}

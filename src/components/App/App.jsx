@@ -1,12 +1,6 @@
 // React Imports
 import { useEffect, useRef, useState } from "react";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 // Components
 import Header from "../Header/Header";
@@ -96,10 +90,17 @@ function App() {
           });
           setIsLoggedIn(true);
           setIsLoading(false);
-          const lastRoute = localStorage.getItem("lastRoute");
+          const lastRoute = localStorage.getItem("lastRoute") || "/";
           navigate(lastRoute);
         })
-        .catch(console.error);
+        .catch((err) => {
+          setIsLoading(false);
+          console.error(err);
+        });
+    }
+
+    if (!token) {
+      setIsLoading(false);
     }
 
     if ("geolocation" in navigator) {
@@ -149,6 +150,18 @@ function App() {
       hasMounted.current = true;
     }
   }, [location.pathname]);
+
+  // Escape Key Effect
+  useEffect(() => {
+    const closeByEscape = (e) => {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    };
+    document.addEventListener("keydown", closeByEscape);
+
+    return () => document.removeEventListener("keydown", closeByEscape);
+  }, []);
 
   // SetActiveModal Handlers
   const handleCardClick = (card) => {
@@ -200,10 +213,7 @@ function App() {
       .signup(newUserData)
       .then((res) => {
         // On successful registration
-        closeActiveModal();
-        setCurrentUser({ _id: res._id, name: res.name, avatar: res.avatar });
-        setIsLoggedIn(true);
-        setIsLoading(false);
+        handleLogin(inputValues); // Automatically log in the user after registration
       })
       .catch(console.error);
   };
@@ -244,7 +254,6 @@ function App() {
     navigate("/");
     setCurrentUser({ _id: "", name: "", avatar: "" });
     setIsLoggedIn(false);
-    setIsLoading(true);
     closeActiveModal();
   };
 
@@ -354,6 +363,7 @@ function App() {
                         handleAddClick={handleAddClick}
                         handleEditProfileClick={handleEditProfileClick}
                         handleLogout={handleLogout}
+                        onCardLike={handleCardLike}
                       />
                     </ProtectedRoute>
                   }

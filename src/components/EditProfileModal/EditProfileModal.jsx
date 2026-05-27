@@ -15,13 +15,16 @@ const defaultValues = {
 const EditProfileModal = ({ isOpen, onClose, onEditProfile }) => {
   const { currentUser } = useContext(CurrentUserContext);
 
-  const { values, handleChange, errors, resetForm, validateAll } =
+  const { values, setValues, handleChange, errors, resetForm, validateAll } =
     useFormWithValidation(defaultValues);
   const [hasSubmitted, setHasSubmited] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
-      resetForm();
+      setValues({
+        name: currentUser.name,
+        avatar: currentUser.avatar || "",
+      });
       setHasSubmited(false);
     }
   }, [isOpen]);
@@ -52,8 +55,7 @@ const EditProfileModal = ({ isOpen, onClose, onEditProfile }) => {
           type="text"
           name="name"
           className={`modal__input ${hasSubmitted && errors.name ? "modal__input_invalid" : ""}`}
-          id="name"
-          placeholder={currentUser.name}
+          id="editProfile-name"
           value={values.name}
           onChange={handleChange}
         />
@@ -67,8 +69,8 @@ const EditProfileModal = ({ isOpen, onClose, onEditProfile }) => {
           type="url"
           name="avatar"
           className={`modal__input ${hasSubmitted && errors.avatar ? "modal__input_invalid" : ""}`}
-          id="avatar"
-          placeholder={currentUser.avatar ? currentUser.avatar : "Avatar Url"}
+          id="editProfile-avatar"
+          placeholder="Avatar Url"
           value={values.avatar}
           onChange={handleChange}
         />

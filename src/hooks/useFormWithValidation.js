@@ -82,7 +82,15 @@ const useFormWithValidation = (defaultValues) => {
     setIsValid(false);
   };
 
-  return { values, handleChange, errors, isValid, resetForm, validateAll };
+  return {
+    values,
+    setValues,
+    handleChange,
+    errors,
+    isValid,
+    resetForm,
+    validateAll,
+  };
 };
 
 export default useFormWithValidation;

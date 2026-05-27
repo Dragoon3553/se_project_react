@@ -19,10 +19,6 @@ const filterWeatherData = (data) => ({
   isDay: data.dt > data.sys.sunrise && data.dt < data.sys.sunset,
 });
 
-const isDay = ({ sunrise, sunset }, now) => {
-  return sunrise * 1000 < now && now < sunset * 1000;
-};
-
 const getWeatherType = (temperature) => {
   if (temperature >= 86) return "hot";
   else if (temperature >= 66) return "warm";

@@ -8,7 +8,6 @@ import LoginContext from "../../contexts/LoginContext";
 import "./Header.css";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import logo from "../../assets/wtwr_logo.svg";
-import avatar from "../../assets/avatar.png";
 import { getInitial, generateBackground } from "../../utils/avatar";
 
 export const currentDate = new Date().toLocaleString("default", {

@@ -3,18 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 // Context Imports
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import LoginContext from "../../contexts/LoginContext";
 
 import "./SideBar.css";
-import avatar from "../../assets/avatar.png";
 import { getInitial, generateBackground } from "../../utils/avatar";
-import { removeToken } from "../../utils/token";
 
 function Sidebar({ handleEditProfileClick, handleLogout }) {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
-
-  const navigate = useNavigate();
+  const { currentUser } = useContext(CurrentUserContext);
 
   const initial = getInitial(currentUser.name);
   const color = generateBackground(currentUser.name);
@@ -33,11 +27,6 @@ function Sidebar({ handleEditProfileClick, handleLogout }) {
             {initial}
           </div>
         )}
-        {/* <img
-          src={currentUser.avatar}
-          alt={currentUser.name}
-          className="sidebar__avatar"
-        /> */}
         <p className="sidebar__username">{currentUser.name}</p>
       </div>
       <button
