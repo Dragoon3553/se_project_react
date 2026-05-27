@@ -6,7 +6,7 @@ import App from "./components/App/App";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/se_project_react">
       <App />
     </BrowserRouter>
   </StrictMode>,

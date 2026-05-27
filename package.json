@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "description": "WTWR: What To Wear",
+  "homepage": "https://Dragoon3553.github.io/se_project_react",
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
