@@ -1,4 +1,5 @@
-import { baseUrl, headers, handleServerResponse } from "./api";
+import { headers, handleServerResponse } from "./api";
+import { baseUrl } from "../utils/constants";
 
 export const signup = ({ name, avatar, email, password }) => {
   return fetch(`${baseUrl}/signup`, {

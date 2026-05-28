@@ -79,4 +79,15 @@ const defaultCoordinates = {
   longitude: -73.416519,
 };
 
-export { weatherOptions, defaultWeatherOptions, apiKey, defaultCoordinates };
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://api.wtwrexpress.datacenter.ar"
+    : "http://localhost:3001";
+
+export {
+  weatherOptions,
+  defaultWeatherOptions,
+  apiKey,
+  defaultCoordinates,
+  baseUrl,
+};
