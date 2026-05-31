@@ -12,12 +12,12 @@ const ProtectedRoute = ({ children, anonymous = false, isLoading }) => {
 
   const { isLoggedIn } = useContext(LoginContext);
 
-  if (!anonymous && !isLoggedIn) {
-    return <Navigate to="/" state={{ from: location }} />;
-  }
-
   if (isLoading) {
     return <Spinner />;
+  }
+
+  if (!anonymous && !isLoggedIn) {
+    return <Navigate to="/" state={{ from: location }} />;
   }
 
   return children;
